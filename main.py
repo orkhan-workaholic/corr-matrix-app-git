@@ -158,26 +158,25 @@ if uploaded_file:
         check_box3 = st.sidebar.checkbox(label="Show highly correlated attributes")
         #
         if check_box3:
-            treshold = st.sidebar.slider('Change correlation range to show highly correlated attributes.', 0.0, 1.0, 0.3)
-            # treshold = treshold/10
-            list_of_corr = []
+          treshold = st.sidebar.slider('Change correlation range to show highly correlated attributes.', 0.0, 1.0, 0.3)
+          list_of_corr = []
 
-            for colname in corr_matrix.columns:
-                for num, value in enumerate(corr_matrix[colname]):
-                    if abs(value) > treshold and value < 1:
-                        if value > 0:
-                            list_of_corr.append(str(abs(
-                                round(value, 2))) + ' of positive (+) correlation detected between ' + colname + ' and ' +
-                                                corr_matrix.columns[num])
-                        elif value < 0:
-                            list_of_corr.append(str(abs(
-                                round(value, 2))) + ' of negative (-) correlation detected between ' + colname + ' and ' +
-                                                corr_matrix.columns[num])
+          for colname in corr_matrix.columns:
+              for num, value in enumerate(corr_matrix[colname]):
+                  if abs(value) > treshold and value < 1:
+                      if value > 0:
+                          list_of_corr.append(str(abs(
+                              round(value, 2))) + ' of positive (+) correlation detected between ' + colname + ' and ' +
+                                              corr_matrix.columns[num])
+                      elif value < 0:
+                          list_of_corr.append(str(abs(
+                              round(value, 2))) + ' of negative (-) correlation detected between ' + colname + ' and ' +
+                                              corr_matrix.columns[num])
 
-            top_corr_sentence = sorted(list_of_corr, reverse=True)
-            top_corr_sentence = pd.DataFrame(top_corr_sentence)
-            st.write('### Top correlated attributes:')
-            st.table(top_corr_sentence)
+          top_corr_sentence = sorted(list_of_corr, reverse=True)
+          top_corr_sentence = pd.DataFrame(top_corr_sentence)
+          st.write('### Top correlated attributes:')
+          st.table(top_corr_sentence)
         else:
             st.error('Show highly correlated sentences by ticking from the left handside')
     else:
