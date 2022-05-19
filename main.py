@@ -13,7 +13,7 @@ st.sidebar.header('1. Upload File')
 
 
 
-uploaded_file = st.sidebar.file_uploader(label='Upload your CSV or Excel file.',
+uploaded_file = st.sidebar.file_uploader(label="Upload your CSV or Excel file. Make sure your dataset doesn't have multilevel columns",
                          type=['csv', 'xlsx'])
 
 
