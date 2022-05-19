@@ -130,6 +130,7 @@ if uploaded_file:
         check_box_corr_plot = st.sidebar.checkbox(label="Display plot of correlation matrix")
         #
         if check_box_corr_plot:
+          
         # if len(corr_matrix.columns) < 50:
           fig, ax = plt.subplots(figsize=(25, 20))
 
@@ -149,6 +150,8 @@ if uploaded_file:
               st.write('Please select attributes to see correlation.')
 #             else:
 #                 st.error("Your corr_matrix includes " + str(len(corr_matrix.columns)) + "criteria which is more than the accepted level: 50")
+        else:
+          pass
 
 
         ###############################################################################
