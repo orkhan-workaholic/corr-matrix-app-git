@@ -127,7 +127,7 @@ if uploaded_file:
         Blue colors depict negative, orange colors depict positive correlation.
         \n Include more attribute to the correlation matrix from the sidebar on the left handside.
         """)
-        check_box_corr_plot = st.sidebar.checkbox(label="Display plot of correlation matrix")
+        check_box_corr_plot = st.sidebar.checkbox(label="Display plot of correlation matrix. (Consumes memory)")
         #
         if check_box_corr_plot:
           if len(corr_matrix.columns) < 50:
