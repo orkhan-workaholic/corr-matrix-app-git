@@ -82,15 +82,15 @@ if uploaded_file:
     ######################################################
     st.sidebar.header('2. Display datasets')
 
-    check_box_raw_df = st.sidebar.checkbox(label="Display loaded dataset", value=True)
+    check_box = st.sidebar.checkbox(label="Display loaded dataset", value=True)
     #
-    if check_box_raw_df:
+    if check_box:
         st.write('### Loaded dataset:')
         st.write(df_raw)
 
-    check_box_clean_df = st.sidebar.checkbox(label="Display clean dataset")
+    check_box2 = st.sidebar.checkbox(label="Display clean dataset")
     #
-    if check_box_clean_df:
+    if check_box2:
         st.write("""
         ### Dataset after cleaning
         Dataset cleaning includes:
@@ -101,9 +101,6 @@ if uploaded_file:
 
     #give sidebar a title
     st.sidebar.header("3. Adjustment")
-
-    df_with_dummmies = pd.get_dummies(df)
-    corr_matrix_all = df_with_dummmies.corr()
 
 
 
@@ -116,25 +113,13 @@ if uploaded_file:
         for i in df.columns:
             if i in feature_selection:
                 selected_cols.append(i)
-
-
     #
     # except Exception:
     #     st.error('Please select attributes to see correlation')
 
-        selected_corr_cols = []
-
-        for col in selected_cols:
-            for corr_col in corr_matrix_all.columns:
-                if col in corr_col:
-                    selected_corr_cols.append(corr_col)
-        # selected_corr_cols
-        selected_corr_df = corr_matrix_all.loc[selected_corr_cols, selected_corr_cols]
-
-
-
-
-
+        selected_df = df.loc[:, selected_cols]
+        selected_df_with_dummmies = pd.get_dummies(selected_df)
+        corr_matrix = selected_df_with_dummmies.corr()
 
         st.write("""
         ## Correlation Matrix
@@ -142,13 +127,14 @@ if uploaded_file:
         Blue colors depict negative, orange colors depict positive correlation.
         \n Include more attribute to the correlation matrix from the sidebar on the left handside.
         """)
-        def plot_corr(selected_corr_df):
-
-            if len(selected_corr_df.columns) < 50:
+        check_box_corr_plot = st.sidebar.checkbox(label="Display plot of correlation matrix")
+        #
+        if check_box_corr_plot:
+            if len(corr_matrix.columns) < 50:
                 fig, ax = plt.subplots(figsize=(25, 20))
 
                 # create seaborn heatmap
-                g = sns.heatmap(selected_corr_df, annot=True, linewidths=.5, center=0)
+                g = sns.heatmap(corr_matrix, annot=True, linewidths=.5, center=0)
 
                 g.set_yticklabels(g.get_yticklabels(), rotation = 0, fontsize = 25)
                 g.set_xticklabels(g.get_xticklabels(), rotation = 90, fontsize = 25)
@@ -165,37 +151,28 @@ if uploaded_file:
                 st.error("Your corr_matrix includes " + str(len(corr_matrix.columns)) + "criteria which is more than the accepted level: 50")
 
 
-        plot_corr(selected_corr_df)
-
-
-
-        refresh_plot = st.sidebar.button('Refresh')
-        if refresh_plot:
-            plot_corr(selected_corr_df)
-
-
         ###############################################################################
 
 
         st.sidebar.header("4. Top correlations with sentences")
-        check_box_sentences = st.sidebar.checkbox(label="Show highly correlated attributes")
+        check_box3 = st.sidebar.checkbox(label="Show highly correlated attributes")
         #
-        if check_box_sentences:
+        if check_box3:
             treshold = st.sidebar.slider('Change correlation range to show highly correlated attributes.', 0.0, 1.0, 0.3)
             # treshold = treshold/10
             list_of_corr = []
 
-            for colname in selected_corr_df.columns:
-                for num, value in enumerate(selected_corr_df[colname]):
+            for colname in corr_matrix.columns:
+                for num, value in enumerate(corr_matrix[colname]):
                     if abs(value) > treshold and value < 1:
                         if value > 0:
                             list_of_corr.append(str(abs(
                                 round(value, 2))) + ' of positive (+) correlation detected between ' + colname + ' and ' +
-                                                selected_corr_df.columns[num])
+                                                corr_matrix.columns[num])
                         elif value < 0:
                             list_of_corr.append(str(abs(
                                 round(value, 2))) + ' of negative (-) correlation detected between ' + colname + ' and ' +
-                                                selected_corr_df.columns[num])
+                                                corr_matrix.columns[num])
 
             top_corr_sentence = sorted(list_of_corr, reverse=True)
             top_corr_sentence = pd.DataFrame(top_corr_sentence)
@@ -207,17 +184,3 @@ if uploaded_file:
         st.info('Select attributes to create correlation matrix')
 else:
     st.info('Upload a file from left handside')
-
-
-# """
-# def main():
-#     st.set_page_config(layout="wide")
-#     set_up_app()
-#     set_up_auth()
-#     render_page_dbt_dashboard()
-#
-#
-# if __name__ == "__main__":
-#     main()
-#
-# """
