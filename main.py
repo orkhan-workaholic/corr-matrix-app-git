@@ -138,28 +138,26 @@ if uploaded_file:
         Blue colors depict negative, orange colors depict positive correlation.
         \n Include more attribute to the correlation matrix from the sidebar on the left handside.
         """)
-        check_box_corr_plot = st.sidebar.checkbox(label="Display plot of correlation matrix", value=True)
-        #
-        if check_box_corr_plot:
-            if len(selected_corr_df.columns) < 50:
-                fig, ax = plt.subplots(figsize=(25, 20))
 
-                # create seaborn heatmap
-                g = sns.heatmap(selected_corr_df, annot=True, linewidths=.5, center=0)
+        if len(selected_corr_df.columns) < 50:
+            fig, ax = plt.subplots(figsize=(25, 20))
 
-                g.set_yticklabels(g.get_yticklabels(), rotation = 0, fontsize = 25)
-                g.set_xticklabels(g.get_xticklabels(), rotation = 90, fontsize = 25)
+            # create seaborn heatmap
+            g = sns.heatmap(selected_corr_df, annot=True, linewidths=.5, center=0)
+
+            g.set_yticklabels(g.get_yticklabels(), rotation = 0, fontsize = 25)
+            g.set_xticklabels(g.get_xticklabels(), rotation = 90, fontsize = 25)
 
 
-                try:
-                    g;
-                    st.write(fig)
+            try:
+                g;
+                st.write(fig)
 
-                except Exception as e:
-                    print(e)
-                    st.write('Please select attributes to see correlation.')
-            else:
-                st.error("Your corr_matrix includes " + str(len(corr_matrix.columns)) + "criteria which is more than the accepted level: 50")
+            except Exception as e:
+                print(e)
+                st.write('Please select attributes to see correlation.')
+        else:
+            st.error("Your corr_matrix includes " + str(len(corr_matrix.columns)) + "criteria which is more than the accepted level: 50")
 
 
         ###############################################################################
