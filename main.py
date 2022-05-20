@@ -7,8 +7,13 @@ st.write("""
 This app provides correlation matrix as dataframe, its heatmap and the most important correlations!
 """)
 st.sidebar.header('1. Upload File')
+
+
+
 uploaded_file = st.sidebar.file_uploader(label="Upload your CSV or Excel file. Make sure your dataset doesn't have multilevel columns",
                          type=['csv', 'xlsx'])
+
+
 if uploaded_file:
     try:
         df = pd.read_csv(uploaded_file)
@@ -90,28 +95,17 @@ if uploaded_file:
         Blue colors depict negative, orange colors depict positive correlation.
         \n Include more attribute to the correlation matrix from the sidebar on the left handside.
         """)
-        if len(corr_matrix.columns) < 50:
-          fig, ax = plt.subplots(figsize=(25, 20))
-
-          # create seaborn heatmap
-          g = sns.heatmap(corr_matrix, annot=True, linewidths=.5, center=0)
-
-          g.set_yticklabels(g.get_yticklabels(), rotation = 0, fontsize = 25)
-          g.set_xticklabels(g.get_xticklabels(), rotation = 90, fontsize = 25)
-
-
-          try:
-              g;
-              st.write(fig)
-
-          except Exception as e:
-              print(e)
-              st.write('Please select attributes to see correlation.')
-        else:
-          st.error("Your correlation matrix includes " + str(len(corr_matrix.columns)) + "criteria (selected columns X their unique valus). Max criteria level is set to 50 for visibility")
-
-
-
+        fig, ax = plt.subplots(figsize=(25, 20))
+        # create seaborn heatmap
+        g = sns.heatmap(corr_matrix, annot=True, linewidths=.5, center=0)
+        g.set_yticklabels(g.get_yticklabels(), rotation = 0, fontsize = 25)
+        g.set_xticklabels(g.get_xticklabels(), rotation = 90, fontsize = 25)
+        try:
+            g;
+            st.write(fig)
+        except Exception as e:
+            print(e)
+            st.write('Please select attributes to see correlation.')
         ###############################################################################
         st.sidebar.header("4. Top correlations with sentences")
         check_box3 = st.sidebar.checkbox(label="Show highly correlated attributes")
