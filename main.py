@@ -82,15 +82,15 @@ if uploaded_file:
     ######################################################
     st.sidebar.header('2. Display datasets')
 
-    check_box = st.sidebar.checkbox(label="Display loaded dataset", value=True)
+    check_box_raw_df = st.sidebar.checkbox(label="Display loaded dataset", value=True)
     #
-    if check_box:
+    if check_box_raw_df:
         st.write('### Loaded dataset:')
         st.write(df_raw)
 
-    check_box2 = st.sidebar.checkbox(label="Display clean dataset")
+    check_box_clean_df = st.sidebar.checkbox(label="Display clean dataset")
     #
-    if check_box2:
+    if check_box_clean_df:
         st.write("""
         ### Dataset after cleaning
         Dataset cleaning includes:
@@ -138,7 +138,7 @@ if uploaded_file:
         Blue colors depict negative, orange colors depict positive correlation.
         \n Include more attribute to the correlation matrix from the sidebar on the left handside.
         """)
-        check_box_corr_plot = st.sidebar.checkbox(label="Display plot of correlation matrix")
+        check_box_corr_plot = st.sidebar.checkbox(label="Display plot of correlation matrix", value=True)
         #
         if check_box_corr_plot:
             if len(selected_corr_df.columns) < 50:
@@ -166,9 +166,9 @@ if uploaded_file:
 
 
         st.sidebar.header("4. Top correlations with sentences")
-        check_box3 = st.sidebar.checkbox(label="Show highly correlated attributes")
+        check_box_sentences = st.sidebar.checkbox(label="Show highly correlated attributes")
         #
-        if check_box3:
+        if check_box_sentences:
             treshold = st.sidebar.slider('Change correlation range to show highly correlated attributes.', 0.0, 1.0, 0.3)
             # treshold = treshold/10
             list_of_corr = []
