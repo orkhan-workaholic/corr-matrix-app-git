@@ -113,6 +113,7 @@ if uploaded_file:
         if check_box3:
             treshold = st.sidebar.slider('Change correlation range to show highly correlated attributes.', 0.0, 1.0, 0.3)
             # treshold = treshold/10
+            print('Tested')
             list_of_corr = []
             for colname in corr_matrix.columns:
                 for num, value in enumerate(corr_matrix[colname]):
